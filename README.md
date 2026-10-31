@@ -6,6 +6,8 @@
   <img src="https://img.shields.io/badge/Version-1.0.0-green?style=for-the-badge" />
 </p>
 
+## 📌 About The Project
+
 **Developer Tool Kit** is a collection of five practical UNIX shell scripts developed to simplify everyday tasks performed by developers.
 
 The project focuses on command-line automation, reducing repetitive manual work and improving productivity through simple, reusable shell utilities.
