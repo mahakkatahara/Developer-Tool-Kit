@@ -1,0 +1,65 @@
+#!/bin/bash
+
+DIR="$(pwd)"
+HOME_DIR="$HOME"
+USERNAME="$(basename "$HOME_DIR")"
+
+BLUE=$'\033[34m'
+CYAN=$'\033[36m'
+MAGENTA=$'\033[35m'
+GREEN=$'\033[32m'
+BOLD=$'\033[1m'
+RESET=$'\033[0m'
+
+print_tree() {
+    local path="$1"
+    local prefix="$2"
+
+    local entries=("$path"/*)
+    local total=${#entries[@]}
+    local index=0
+
+    for entry in "${entries[@]}"; do
+        ((index++))
+
+        if [[ $index -eq $total ]]; then
+            branch="└──"
+            new_prefix="$prefix    "
+        else
+            branch="├──"
+            new_prefix="$prefix│   "
+        fi
+
+        if [[ -d "$entry" ]]; then
+            echo -e "${prefix}${branch} ${BLUE}📁 ${BOLD}$(basename "$entry")${RESET}"
+        elif [[ -f "$entry" ]]; then
+            echo -e "${prefix}${branch} ${CYAN}📄 $(basename "$entry")${RESET}"
+        fi
+    done
+}
+
+REL_PATH="${DIR#$HOME_DIR/}"
+
+if [[ "$DIR" == "$HOME_DIR" ]]; then
+    echo -e "${GREEN}${BOLD}$USERNAME${MAGENTA} (You are here)${RESET}"
+    prefix="    "  
+else
+    echo -e "${GREEN}${BOLD}$USERNAME${RESET}"
+
+    IFS='/' read -ra PARTS <<< "$REL_PATH"
+    prefix=""
+
+    for ((i=0; i<${#PARTS[@]}; i++)); do
+        part="${PARTS[i]}"
+
+        if [[ $i -eq $((${#PARTS[@]} - 1)) ]]; then
+            echo -e "${prefix}└── ${MAGENTA}${BOLD}$part (You are here)${RESET}"
+            prefix="$prefix    "
+        else
+    echo -e "${prefix}├── ${BLUE}$part${RESET}"
+    prefix="${prefix}$(printf '\342\224\202')   "
+fi
+    done
+fi
+
+print_tree "$DIR" "$prefix"

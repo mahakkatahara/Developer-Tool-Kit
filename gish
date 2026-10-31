@@ -1,0 +1,44 @@
+#!/bin/bash
+set -euo pipefail
+
+NC="\033[0m"
+RED="\033[38;5;203m"       
+GREEN="\033[38;5;114m"     
+YELLOW="\033[38;5;180m"    
+BLUE="\033[38;5;75m"       
+MAGENTA="\033[38;5;139m"   
+CYAN="\033[38;5;73m"       
+WHITE="\033[38;5;255m"    
+
+echo -e "${BLUE}Please enter a message for the commit (leave empty for 'Auto commit'):${NC}"
+read -rp "> " msg
+
+if [ -z "${msg:-}" ]; then
+    msg="Auto commit"
+    echo -e "${YELLOW}Using default commit message:${NC} ${CYAN}\"$msg\"${NC}"
+fi
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo -e "${RED}⚠ Not a git repository in ${MAGENTA}$(pwd)${NC}"
+fi
+
+echo -e "${MAGENTA}→ Adding files...${NC}"
+git add .
+
+echo -e "${MAGENTA}→ Committing...${NC}"
+
+if git commit -m "$msg"; then
+    echo -e "${GREEN}✅ Commit successful: \"$msg\"${NC}"
+else
+    echo -e "${RED}❌ Commit failed.${NC}"
+    exit 1
+fi
+
+echo -e "${CYAN}→ Pushing...${NC}"
+if git push; then
+    echo -e "${GREEN}✅ Push successful.${NC}"
+else
+    echo -e "${RED}❌ Push failed.${NC}"
+    echo -e "${YELLOW}You may need:${NC} git push --set-upstream origin <branch>"
+    exit 1
+fi
