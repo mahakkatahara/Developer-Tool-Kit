@@ -1,1 +1,4 @@
 .todo/
+venv/
+.ipynb_checkpoints/
+Untitled.ipynb
