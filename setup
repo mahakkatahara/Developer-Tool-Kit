@@ -17,8 +17,14 @@ echo -e "${BLUE}============================================================${NC
 echo -e "${MAGENTA}         💻 Environment Setup (Auto Venv) 💻${NC}\n"
 
 # Check operating system
-if [[ "$(uname -s)" != "Darwin" ]]; then
-    echo -e "${RED}This version of setup is intended for macOS.${NC}"
+OS="$(uname -s)"
+
+if [[ "$OS" == "Darwin" ]]; then
+    echo -e "${GREEN}✔ macOS detected.${NC}"
+elif [[ "$OS" == "Linux" ]]; then
+    echo -e "${GREEN}✔ Linux detected.${NC}"
+else
+    echo -e "${RED}Unsupported operating system: $OS${NC}"
     exit 1
 fi
 
@@ -37,16 +43,30 @@ echo -e "------------------------------------------------------------${NC}"
 if ! command -v python3 >/dev/null 2>&1; then
     echo -e "${RED}Python not found.${NC}"
 
-    if [[ "$BREW_AVAILABLE" == true ]]; then
-        echo -e "${CYAN}Installing Python using Homebrew...${NC}"
-        brew install python || {
-            echo -e "${RED}Python installation failed.${NC}"
+    if [[ "$OS" == "Darwin" ]]; then
+        if [[ "$BREW_AVAILABLE" == true ]]; then
+            echo -e "${CYAN}Installing Python using Homebrew...${NC}"
+            brew install python || {
+                echo -e "${RED}Python installation failed.${NC}"
+                exit 1
+            }
+        else
+            echo -e "${RED}Homebrew is required to install Python on macOS.${NC}"
             exit 1
-        }
-    else
-        echo -e "${RED}Homebrew is required to install Python automatically.${NC}"
-        echo "Install Homebrew from https://brew.sh and run this script again."
-        exit 1
+        fi
+
+    elif [[ "$OS" == "Linux" ]]; then
+        if command -v apt-get >/dev/null 2>&1; then
+            echo -e "${CYAN}Installing Python using apt...${NC}"
+            sudo apt-get update
+            sudo apt-get install -y python3 python3-pip python3-venv || {
+                echo -e "${RED}Python installation failed.${NC}"
+                exit 1
+            }
+        else
+            echo -e "${RED}This Linux distribution is not supported for automatic installation.${NC}"
+            exit 1
+        fi
     fi
 else
     echo -e "${GREEN}✔ Python installed:${NC} $(python3 --version)"
@@ -124,36 +144,66 @@ read -r -p "Install Git? [Y/n]: " GT
 if [[ "$GT" =~ ^[Yy]$ || -z "$GT" ]]; then
     if command -v git >/dev/null 2>&1; then
         echo -e "${GREEN}✔ Git is already installed: $(git --version)${NC}"
-    elif [[ "$BREW_AVAILABLE" == true ]]; then
-        echo -e "${CYAN}→ Installing Git using Homebrew...${NC}"
-        brew install git || {
-            echo -e "${RED}Git installation failed.${NC}"
-            exit 1
-        }
-        echo -e "${GREEN}✔ Git installed.${NC}"
-    else
-        echo -e "${YELLOW}Homebrew is not installed. Cannot install Git automatically.${NC}"
-        echo "Install Homebrew from https://brew.sh, then run: brew install git"
+
+    elif [[ "$OS" == "Darwin" ]]; then
+        if [[ "$BREW_AVAILABLE" == true ]]; then
+            echo -e "${CYAN}→ Installing Git using Homebrew...${NC}"
+            brew install git || {
+                echo -e "${RED}Git installation failed.${NC}"
+                exit 1
+            }
+        else
+            echo -e "${YELLOW}Install Homebrew to install Git automatically.${NC}"
+        fi
+
+    elif [[ "$OS" == "Linux" ]]; then
+        if command -v apt-get >/dev/null 2>&1; then
+            echo -e "${CYAN}→ Installing Git using apt...${NC}"
+            sudo apt-get update
+            sudo apt-get install -y git || {
+                echo -e "${RED}Git installation failed.${NC}"
+                exit 1
+            }
+        else
+            echo -e "${YELLOW}Please install Git using your Linux package manager.${NC}"
+        fi
+    fi
+
+    if command -v git >/dev/null 2>&1; then
+        echo -e "${GREEN}✔ Git installation completed.${NC}"
     fi
 fi
-
 read -r -p "Install Visual Studio Code? [Y/n]: " VC
 if [[ "$VC" =~ ^[Yy]$ || -z "$VC" ]]; then
-    if [[ -d "/Applications/Visual Studio Code.app" ]]; then
-        echo -e "${GREEN}✔ Visual Studio Code is already installed.${NC}"
-    elif [[ "$BREW_AVAILABLE" == true ]]; then
-        echo -e "${CYAN}→ Installing VS Code using Homebrew...${NC}"
-        brew install --cask visual-studio-code || {
-            echo -e "${RED}VS Code installation failed.${NC}"
-            exit 1
-        }
-        echo -e "${GREEN}✔ VS Code installed.${NC}"
-    else
-        echo -e "${YELLOW}Homebrew is not installed. Cannot install VS Code automatically.${NC}"
-        echo "Install Homebrew from https://brew.sh, then run: brew install --cask visual-studio-code"
+
+    if [[ "$OS" == "Darwin" ]]; then
+        if [[ -d "/Applications/Visual Studio Code.app" ]]; then
+            echo -e "${GREEN}✔ Visual Studio Code is already installed.${NC}"
+        elif [[ "$BREW_AVAILABLE" == true ]]; then
+            echo -e "${CYAN}→ Installing VS Code using Homebrew...${NC}"
+            brew install --cask visual-studio-code || {
+                echo -e "${RED}VS Code installation failed.${NC}"
+                exit 1
+            }
+        else
+            echo -e "${YELLOW}Install Homebrew to install VS Code automatically.${NC}"
+        fi
+
+    elif [[ "$OS" == "Linux" ]]; then
+        if command -v code >/dev/null 2>&1; then
+            echo -e "${GREEN}✔ Visual Studio Code is already installed.${NC}"
+        elif command -v snap >/dev/null 2>&1; then
+            echo -e "${CYAN}→ Installing VS Code using Snap...${NC}"
+            sudo snap install code --classic || {
+                echo -e "${RED}VS Code installation failed.${NC}"
+                exit 1
+            }
+        else
+            echo -e "${YELLOW}Snap is not available. Please install VS Code manually.${NC}"
+            echo "Visit: https://code.visualstudio.com/"
+        fi
     fi
 fi
-
 echo -e "\n${GREEN}============================================================"
 echo -e "           Setup Completed Successfully!"
 echo -e "============================================================${NC}\n"

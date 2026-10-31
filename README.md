@@ -1,12 +1,10 @@
 # 🛠️ Developer Tool Kit
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Language-Bash-orange?style=for-the-badge&logo=gnubash&logoColor=white" />
-  <img src="https://img.shields.io/badge/Platform-macOS-blue?style=for-the-badge&logo=apple" />
+  <img src="https://img.shields.io/badge/Language-Bash-orange?style=for-the-badge&logo=gnubash" />
+  <img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux-blue?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Version-1.0.0-green?style=for-the-badge" />
 </p>
-
-## 📌 About The Project
 
 **Developer Tool Kit** is a collection of five practical UNIX shell scripts developed to simplify everyday tasks performed by developers.
 
@@ -32,7 +30,7 @@ From setting up a development environment and interacting with AI to automating 
 - **Git & GitHub** – Version control and repository management.
 - **curl** – HTTP requests to the Gemini API.
 - **jq** – Processing JSON API responses.
-- **Zenity** – Optional GUI integration in the original Linux implementation.
+- **Terminal-based interface** – Used by the current Todo Manager.
 
 ## 📂 Project Structure
 
@@ -54,14 +52,14 @@ Developer-Tool-Kit/
 
 ### Prerequisites
 
-- macOS
+- macOS or Ubuntu/Debian Linux
 - Bash shell
 - Python 3 and pip
 - Git
 - curl
 - jq
-- Homebrew (for automatic installation of missing dependencies)
-
+- Homebrew (macOS, for automatic installation)
+- sudo privileges (Linux, for package installation)
 ### 1. Clone the Repository
 
 ```bash
@@ -214,7 +212,7 @@ Tasks are stored locally in the `.todo` directory.
 
 The project can be extended with:
 
-- Support for additional Linux distributions.
+- Support for additional Linux distributions beyond Ubuntu/Debian.
 - More developer productivity shell utilities.
 - Improved error handling and input validation.
 - Enhanced terminal interfaces and customization.
