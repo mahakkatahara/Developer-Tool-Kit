@@ -1,84 +1,236 @@
+# 🛠️ Developer Tool Kit
 
-![bash](https://img.shields.io/badge/language-bash-orange)
-![Platform](https://img.shields.io/badge/OS-Linux-blue)
-![Version](https://img.shields.io/badge/Version-1.0.0-green)
+<p align="center">
+  <img src="https://img.shields.io/badge/Language-Bash-orange?style=for-the-badge&logo=gnubash&logoColor=white" />
+  <img src="https://img.shields.io/badge/Platform-macOS-blue?style=for-the-badge&logo=apple" />
+  <img src="https://img.shields.io/badge/Version-1.0.0-green?style=for-the-badge" />
+</p>
 
+## 📌 About The Project
 
-# Developer-Tool-Kit
+**Developer Tool Kit** is a collection of five practical UNIX shell scripts developed to simplify everyday tasks performed by developers.
 
-The Developer Tool Kit is a collection of five practical UNIX shell scripts designed
-to simplify and automate daily tasks performed by developers. These tools aim to
-improve productivity, reduce repetitive tasks, and enhance the command-line
-workflow. Each script focuses on a specific real-world requirement—from interacting
-with AI, to managing version control, organizing directory structures, setting up
-environments, and maintaining personal task lists.
+The project focuses on command-line automation, reducing repetitive manual work and improving productivity through simple, reusable shell utilities.
 
-# USAGES
+From setting up a development environment and interacting with AI to automating Git operations, viewing directory structures and managing daily tasks, the toolkit brings multiple developer utilities together in one place.
 
-## setup - This will initialise venv.
-```bash
-setup
+## ✨ Key Features
+
+| Tool | Description |
+|---|---|
+| **Setup** | Automatically creates a Python virtual environment and provides options to install development and Machine Learning libraries. |
+| **GPT** | A terminal-based AI assistant powered by the Google Gemini API. |
+| **MyTree** | Displays a coloured directory structure with a marker for the current location. |
+| **Gish** | Simplifies Git operations by automating add, commit and push commands. |
+| **Todo** | A lightweight task manager that stores tasks locally and tracks their completion status. |
+
+## 🧰 Technologies Used
+
+- **Bash / Shell Scripting** – Automation and command-line utilities.
+- **Python & pip** – Virtual environment and package management.
+- **Google Gemini API** – AI-powered terminal assistant.
+- **Git & GitHub** – Version control and repository management.
+- **curl** – HTTP requests to the Gemini API.
+- **jq** – Processing JSON API responses.
+- **Zenity** – Optional GUI integration in the original Linux implementation.
+
+## 📂 Project Structure
+
+```text
+Developer-Tool-Kit/
+│
+├── setup           # Development environment setup
+├── gpt             # Terminal AI assistant
+├── ai_helper.sh    # Shared AI API helper
+├── mytree          # Directory structure viewer
+├── gish            # Git automation utility
+├── todo            # Task management utility
+├── README.md       # Project documentation
+├── LICENSE         # Project license
+└── .gitignore      # Ignored local files
 ```
 
-## gpt - AI Assistant in Terminal
+## ⚙️ Installation & Setup
+
+### Prerequisites
+
+- macOS
+- Bash shell
+- Python 3 and pip
+- Git
+- curl
+- jq
+- Homebrew (for automatic installation of missing dependencies)
+
+### 1. Clone the Repository
+
 ```bash
-gpt <prompt here>
+git clone https://github.com/mahakkatahara/Developer-Tool-Kit.git
 ```
 
-## mytree - Directory Structure Viewer
+Navigate to the project directory:
 
 ```bash
-mytree
-```
-
-## gish - Git Automation Script
-```bash
-gish
-```
-
-## todo – Lightweight To-Do Manager
-
-```bash
-  todo init
-  todo "task message"
-  todo display
-  todo done <sequence>
-```
-
-
-## CLONE THE REPO
-```bash
-git clone https://github.com/SaraJain90/Developer-Tool-Kit.git
 cd Developer-Tool-Kit
 ```
-## INSTALL ZENITY
+
+### 2. Provide Execution Permissions
+
 ```bash
-sudo apt install zenity
+chmod +x setup gpt mytree gish todo ai_helper.sh
 ```
 
+### 3. Install Dependencies
 
-## ADD to path
-### ZSH
+Run the setup script:
+
 ```bash
-DIR="$(pwd)"
-echo 'export PATH="$PATH:'"$DIR"'"' >> ~/.zshrc
-source ~/.zshrc
+./setup
 ```
-### BASH
+
+The script creates a Python virtual environment and provides optional installation of:
+
+- NumPy
+- Pandas
+- Matplotlib
+- Seaborn
+- Scikit-learn
+- SciPy
+- Jupyter Notebook
+- JupyterLab
+- Git
+- Visual Studio Code
+
+### 4. Activate the Virtual Environment
+
 ```bash
-DIR="$(pwd)"
-echo 'export PATH="$PATH:'"$DIR"'"' >> ~/.bashrc
-source ~/.bashrc
+source venv/bin/activate
 ```
-## Setup gemini API Key
-### ZSH
+
+To deactivate:
+
 ```bash
-echo 'export GEMINI_API_KEY="API"' >> ~/.zshrc
-source ~/.zshrc
+deactivate
 ```
-### BASH
+
+## 🚀 Usage Guide
+
+### 1. Environment Setup – `setup`
+
+Creates and configures a Python development environment.
+
 ```bash
-echo 'export GEMINI_API_KEY="API"' >> ~/.bashrc
-source ~/.bashrc
+./setup
 ```
-//for testing
+
+Follow the interactive prompts to select the packages and tools you want to install.
+
+### 2. AI Assistant – `gpt`
+
+Interact with Google's Gemini AI directly from the terminal.
+
+First, obtain an API key from [Google AI Studio](https://aistudio.google.com/apikey).
+
+Set the API key:
+
+```bash
+export GEMINI_API_KEY="YOUR_API_KEY"
+```
+
+Ask a question:
+
+```bash
+./gpt "Explain pointers in C++"
+```
+
+The assistant processes the prompt using the Gemini API and displays the response in the terminal.
+
+### 3. Directory Viewer – `mytree`
+
+Displays the directory structure with coloured file and folder names.
+
+```bash
+./mytree
+```
+
+Run it from the directory you want to inspect.
+
+### 4. Git Automation – `gish`
+
+Automates the basic Git workflow.
+
+```bash
+./gish
+```
+
+The script:
+
+1. Requests a commit message.
+2. Uses a default message if none is provided.
+3. Stages the changes using `git add .`.
+4. Creates a Git commit.
+5. Pushes the commit to the configured remote repository.
+
+**Note:** Run this script inside a configured Git repository. Review your changes before execution because it stages all files in the current directory.
+
+### 5. Task Manager – `todo`
+
+A simple file-based task management utility.
+
+**Initialize the task manager:**
+
+```bash
+./todo init
+```
+
+**Add a new task:**
+
+```bash
+./todo "Complete Unix assignment"
+```
+
+**Display all tasks:**
+
+```bash
+./todo display
+```
+
+**Mark a task as completed:**
+
+```bash
+./todo done 1
+```
+
+Tasks are stored locally in the `.todo` directory.
+
+## 🔐 Security & Configuration
+
+- Keep your Gemini API key private.
+- Do not upload API keys or credentials to GitHub.
+- The `.gitignore` file excludes local virtual environments, temporary Jupyter files and task data.
+- Use `gish` carefully and review staged changes before pushing.
+
+## 🔮 Future Scope
+
+The project can be extended with:
+
+- Support for additional Linux distributions.
+- More developer productivity shell utilities.
+- Improved error handling and input validation.
+- Enhanced terminal interfaces and customization.
+- Additional automation for development workflows.
+
+## 📄 License
+
+This project is distributed under the license included in the repository. See [LICENSE](LICENSE) for details.
+
+## 👥 Contributors
+
+Developed as a collaborative Unix Programming project by the team members of **Batch F7, JIIT Noida**.
+
+---
+
+<p align="center">
+  <b>Developer Tool Kit</b><br/>
+  Making everyday developer tasks simpler, faster and more efficient.
+</p>
