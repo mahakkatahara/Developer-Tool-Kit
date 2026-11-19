@@ -18,7 +18,7 @@ call_ai() {
     local payload
     payload=$(jq -n \
         --arg prompt "$prompt" \
-        '{model: "gemini-3.5-flash-lite", input: $prompt}')
+        '{model: "gemini-3.8-flash", input: $prompt}')
 
     local response
 
