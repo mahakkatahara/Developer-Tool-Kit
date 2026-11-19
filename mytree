@@ -1,6 +1,5 @@
 #!/bin/bash
-
-DIR="$(pwd)"
+DIR="${1:-$(pwd)}"
 HOME_DIR="$HOME"
 USERNAME="$(basename "$HOME_DIR")"
 
