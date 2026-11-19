@@ -1,0 +1,73 @@
+#!/bin/bash
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+while true
+do
+    clear
+    echo "================================"
+    echo "      DEVELOPER TOOL KIT"
+    echo "================================"
+    echo "1. AI Assistant"
+    echo "2. Directory Viewer"
+    echo "3. Todo Manager"
+    echo "4. Git Automation"
+    echo "5. Setup Environment"
+    echo "6. Exit"
+    echo "================================"
+
+    read -p "Enter your choice: " choice
+
+    case $choice in
+        1)
+            read -p "Enter your question: " prompt
+            "$SCRIPT_DIR/gpt" "$prompt"
+            ;;
+        2)
+            "$SCRIPT_DIR/mytree"
+            ;;
+        3)
+            echo "1. Add Task"
+            echo "2. Display Tasks"
+            echo "3. Mark Task Done"
+            read -p "Choose: " todo_choice
+
+            case $todo_choice in
+                1)
+                    read -p "Enter task: " task
+                    "$SCRIPT_DIR/todo" "$task"
+                    ;;
+                2)
+                    "$SCRIPT_DIR/todo" display
+                    ;;
+                3)
+                    read -p "Enter task number: " number
+                    "$SCRIPT_DIR/todo" done "$number"
+                    ;;
+                *)
+                    echo "Invalid choice"
+                    ;;
+            esac
+            ;;
+        4)
+            echo "Warning: This stages and pushes Git changes."
+            read -p "Continue? (y/n): " confirm
+            if [ "$confirm" = "y" ]; then
+                "$SCRIPT_DIR/gish"
+            fi
+            ;;
+        5)
+            "$SCRIPT_DIR/setup"
+            ;;
+        6)
+            echo "Exiting Developer Tool Kit..."
+            break
+            ;;
+        *)
+            echo "Invalid choice!"
+            ;;
+    esac
+
+    echo
+    read -p "Press Enter to return to menu..."
+done
