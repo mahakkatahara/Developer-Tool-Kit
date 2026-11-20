@@ -13,12 +13,14 @@ do
     echo "3. Todo Manager"
     echo "4. Git Automation"
     echo "5. Setup Environment"
+    echo "new task"
     echo "6. Exit"
     echo "================================"
 
     read -p "Enter your choice: " choice
 
     case $choice in
+
         1)
             read -p "Enter your question: " prompt
             "$SCRIPT_DIR/gpt" "$prompt"
